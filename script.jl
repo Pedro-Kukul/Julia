@@ -71,7 +71,9 @@ end
 function main()
     while true
         displayGrammar()
-        input = String(strip(Base.prompt("Enter a sentence | Enter END to terminate Program"))) # asks the user for an input, waits for the input, strips the input from white space and then ensures that it is of string value
+        print("Enter a sentence: Enter 'END' to terminate the program...")
+        input = String(strip(readline())) # needs to redeclrare string after stripping for whitespace | al of it could have been done with: String(strip(Base.prompt("Enter a sentence | 'END' to terminate the program))) but idk if BAse counts as an external library
+
         try
             if validateInput(input)
                 println("Terminating Program...")
