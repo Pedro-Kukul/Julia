@@ -58,15 +58,58 @@ function displayGrammar()
 end
 
 #= Example
-    do 
-        Button A MoveF:
-        Button B MoveF:
-        Button C Turn L:
-        Button D Turn L:
-    done
+    do         Button A MoveF:        Button B MoveF:        Button C TurnL:        Button D TurnL:    done
+=#
+#=  Derivation
+    do <stmt_list> done
+    do <stmt> : <stmt_list> done
+    do Button <x> <y> : <stmt_list> done
+    do Button A <y> : <stmt_list> done
+    do Button A MoveF : <stmt_list> done
+    do Button A MoveF : <stmt> : <stmt_list> done
+    do Button A MoveF : Button <x> <y> : <stmt_list> done
+    do Button A MoveF : Button B <y> : <stmt_list> done
+    do Button A MoveF : Button B MoveF : <stmt_list> done
+    do Button A MoveF : Button B MoveF : <stmt> : <stmt_list> done
+    do Button A MoveF : Button B MoveF : Button <x> <y> : <stmt_list> done
+    do Button A MoveF : Button B MoveF : Button C <y> : <stmt_list> done
+    do Button A MoveF : Button B MoveF : Button C TurnL : <stmt_list> done
+    do Button A MoveF : Button B MoveF : Button C TurnL : <stmt> done
+    do Button A MoveF : Button B MoveF : Button C TurnL : Button <x> <y> done
+    do Button A MoveF : Button B MoveF : Button C TurnL : Button D <y> done
+    do Button A MoveF : Button B MoveF : Button C TurnL : Button D TurnL done
+
 =#
 
 
+
+function leftMostDerivation(input::String)
+    r_do = r"\bdo\b"
+    r_done = r"\bdone\b"
+
+    # Todo: Fix this output mess
+    if !(occursin(r_do, input) || occursin(r_done, input))
+        throw("'do' and 'done' must be included in the sentence")
+    elseif (count(r_do, input) > 1)
+        throw("Only one 'do' should be included")
+    elseif (count(r_done, input) > 1)
+        throw("Only one 'done' should be included")
+    elseif (!startswith(input, r_do))
+        throw("Sentence must start with 'do'")
+    elseif (!endswith(input, r_done))
+        throw("Sentence must end with 'done'")
+    end
+
+    # Declare a array that splits the input based on whitespace
+    tokens = split(input)
+    if length(tokens) > 2  # It has to be more than two since do and done have been checked already
+        tokens = tokens[2:end-1] # remove the first and last elements of tokens array which is do and done
+    else
+        throw(ArgumentError("Enter instructions!")) #throw error if no ienstsructoisn
+    end
+    tokens = join(tokens, " ") # join tokens again by whitespace
+    println(tokens) # send to process stmt lists
+end
 # Main 
 function main()
     while true
@@ -75,7 +118,9 @@ function main()
         input = String(strip(readline())) # needs to redeclrare string after stripping for whitespace | al of it could have been done with: String(strip(Base.prompt("Enter a sentence | 'END' to terminate the program))) but idk if BAse counts as an external library
 
         try
-            if validateInput(input)
+            if !validateInput(input)
+                leftMostDerivation(input)
+            else
                 println("Terminating Program...")
                 break
             end
