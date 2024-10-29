@@ -1,0 +1,5 @@
+PBASIC PROGRAM FOR IZEBOT
+----------------------------
+IF KeyPress =  key a THEN FORWARD
+IF KeyPress = key b THEN SPIN_LEFT
+END

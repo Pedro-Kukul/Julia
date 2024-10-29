@@ -58,6 +58,8 @@ function processII(aids2::AbstractString)
 end
 
 function processIII(aids3::AbstractString)
+    global assignments
+    push!(assignments, aids3)
     tokens = split(strip(aids3), " ")
     if length(tokens) != 4
         throw("Expected exactly four words, received $(length(tokens)), $(join(tokens, " "))")

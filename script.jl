@@ -59,6 +59,7 @@ end
 
 #= Example
     do         Button A MoveF:        Button B MoveF:        Button C TurnL:        Button D TurnL:    done
+    wake key a = DRIVE; key b = SPINL; sleep
 =#
 #=  Derivation
     do <stmt_list> done
